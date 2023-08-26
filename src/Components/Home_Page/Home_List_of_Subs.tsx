@@ -4,39 +4,43 @@ import { useState, useEffect, useRef } from "react";
 //Component imports
 import Subscription from "./Subscription";
 
+//Backend imports
+const { userDatabase, paymentDatabase } = require('../../../supabase/database');
+
 export default function Home_List_of_Subs(props: any) {
   const [Subs, setSubs] = useState<object[]>([]);
   const Username = props.Username;
-
+  (paymentDatabase.getPayments(Username)).then((hi: any) => console.log(hi))
   useEffect(() => {
     Get_List_of_Subs(Username);
   }, []);
 
   async function Get_List_of_Subs(Username: string) {
     //call backend API to get the list of subscriptions under this user
-    //for now just put sample data and set the Subs state to that
-    const TestSub1 = {
-      SubID: 0,
-      Name: "Netflix",
-      Cost: 10,
-    };
+    const result = await paymentDatabase.getPayments(Username)
 
-    const TestSub2 = {
-      SubID: 1,
-      Name: "PHub",
-      Cost: 12,
-    };
-
-    setSubs([TestSub1, TestSub2]);
+    if (result.error) {
+      console.log(result.error) //console log the erro if there is an error
+    } else if (!result.error) {
+      setSubs(result.data) //if no error, set Subs to be the array of payments returned in the query
+    }
   }
   return (
     <div>
-      <h1>List of Payments:</h1>
-      {Subs.map((Sub) => (
-        <div key={Sub.SubID}>
-          <Subscription Sub={Sub} />
+      {Subs.length == 0 ?
+        <div>
+          there are no Payments
         </div>
-      ))}
+      :
+      <div>
+        <h1>List of Payments:</h1>
+        {Subs.map((Sub) => (
+        <div key={Sub.SubID}>
+        <Subscription Sub={Sub} />
+        </div>
+        ))}
+      </div>
+      }
     </div>
   );
 }
