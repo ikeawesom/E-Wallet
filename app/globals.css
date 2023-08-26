@@ -5,12 +5,13 @@
 @tailwind utilities;
 
 :root {
-  --primary-font-color: #121212;
-  --secondary-font-color: #333333;
-  --p-font-color: #969696;
   --white: #f3f3f3;
   --primary-color: #9b47bd;
   --sec-color: #edced7;
+
+  --primary-font-color: #121212;
+  --secondary-font-color: #333333;
+  --p-font-color: #969696;
 }
 
 * {
