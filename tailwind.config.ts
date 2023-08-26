@@ -15,6 +15,13 @@ const config: Config = {
           'login':
           'linear-gradient(to bottom, rgba(0, 0, 0, 0.312), rgba(0, 0, 0, 0.5)),url("/images/login-banner.jpg")',
       },
+      colors: {
+        'font-primary': "var(--primary-font-color)",
+        'font-secondary':"var(--secondary-font-color)",
+        'font-para': "var(--p-font-color)",
+        'primary-color': "var(--primary-color)",
+        'sec-color': "var(--sec-color)",
+      },
     },
   },
   plugins: [],

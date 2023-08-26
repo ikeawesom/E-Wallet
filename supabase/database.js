@@ -22,8 +22,9 @@ class userDB {
       .select("password, salt")
       .eq("username", username);
 
-    if (!error) return verifyLogin(data, password);
-    return false;
+    const valid = verifyLogin(data, password);
+
+    return { data, error, valid };
   }
 }
 
@@ -51,6 +52,16 @@ class paymentsDB {
     const { data, error } = await supabase
       .from("user_payments")
       .update({ monthly_payments: value })
+      .eq("username", username)
+      .select();
+
+    return { data, error };
+  }
+
+  async setBalance(username, value) {
+    const { data, error } = await supabase
+      .from("user_payments")
+      .update({ balance: value })
       .eq("username", username)
       .select();
 

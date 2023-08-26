@@ -12,7 +12,9 @@ For example:
 import { paymentDatabase } from "@/supabase/database";
 
 async function payments() {
-  const { data, error } = await paymentDatabase.getPayments("sample-username");
+  const { data, error } = await paymentDatabase.getPaymentDetails(
+    "sample-username"
+  );
   if (error) console.log(error);
   else {
     console.log(data);
