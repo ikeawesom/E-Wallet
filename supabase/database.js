@@ -19,7 +19,7 @@ class userDB {
   async loginUser(username, password) {
     let { data, error } = await supabase
       .from("users")
-      .select("password", "salt")
+      .select("password, salt")
       .eq("username", username);
 
     if (!error) return verifyLogin(data, password);
