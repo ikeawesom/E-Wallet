@@ -22,8 +22,9 @@ class userDB {
       .select("password, salt")
       .eq("username", username);
 
-    if (!error) return verifyLogin(data, password);
-    return false;
+    const valid = verifyLogin(data, password);
+
+    return { data, error, valid };
   }
 }
 
