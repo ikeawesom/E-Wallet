@@ -1,6 +1,9 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 
+//Component imports
+import Nav_Bar from '@/src/Components/Home_Page/Home_NavBar';
+
 export default function Home() {
   const [Login_Username, set_Login_Username] = useState(localStorage.getItem('Login_Username')) //Get the Login Username. will be null if not logged in
   
@@ -15,9 +18,7 @@ export default function Home() {
 
     return (
       <div>
-        <h1>Hello {localStorage.getItem('Login_Username')}!</h1> <br />
-
-        <button onClick={Logout}>Logout</button>
+        <Nav_Bar Logout={Logout}/>
       </div>
     );
   }
