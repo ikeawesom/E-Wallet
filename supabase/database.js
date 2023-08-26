@@ -57,6 +57,16 @@ class paymentsDB {
 
     return { data, error };
   }
+
+  async setBalance(username, value) {
+    const { data, error } = await supabase
+      .from("user_payments")
+      .update({ balance: value })
+      .eq("username", username)
+      .select();
+
+    return { data, error };
+  }
 }
 
 export const userDatabase = new userDB();
