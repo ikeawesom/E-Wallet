@@ -19,12 +19,12 @@ class userDB {
   async loginUser(username, password) {
     const hashed = handlePassword(password);
 
-    let { data: users, error } = await supabase
+    let { data, error } = await supabase
       .from("users")
       .select("password")
       .eq("username", username);
 
-    return { data, error };
+    return { data, error, hashed };
   }
 }
 
@@ -42,6 +42,16 @@ class paymentsDB {
     const { data, error } = await supabase
       .from("user_payments")
       .update({ payments: list })
+      .eq("username", username)
+      .select();
+
+    return { data, error };
+  }
+
+  async setMonthlyPayments(username, value) {
+    const { data, error } = await supabase
+      .from("user_payments")
+      .update({ monthly_payments: value })
       .eq("username", username)
       .select();
 
