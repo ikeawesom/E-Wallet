@@ -21,6 +21,8 @@ const config: Config = {
         'font-para': "var(--p-font-color)",
         'primary-color': "var(--primary-color)",
         'sec-color': "var(--sec-color)",
+        'light-sec-color': "var(--light-sec-color)",
+        'grey':"var(--grey)"
       },
     },
   },

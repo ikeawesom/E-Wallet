@@ -6,12 +6,17 @@
 
 :root {
   --white: #f3f3f3;
-  --primary-color: #9b47bd;
-  --sec-color: #edced7;
+  --grey: #f7f9fb;
 
+  /* Defaults */
+  --primary-color: #16056b;
+  --sec-color: #5696f4;
+  --light-sec-color: rgb(242, 247, 255);
+
+  /* Fonts */
   --primary-font-color: #121212;
   --secondary-font-color: #333333;
-  --p-font-color: #969696;
+  --p-font-color: #a8a8a9;
 }
 
 * {
