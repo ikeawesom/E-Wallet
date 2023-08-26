@@ -3,10 +3,10 @@ import { handlePassword } from "./helpers";
 
 class userDB {
   async addUser(username, password) {
-    const hashed = handlePassword(password);
+    const { hashed, salt } = handlePassword(password);
     const { data, error } = await supabase
       .from("users")
-      .insert([{ username: username, password: hashed }])
+      .insert([{ username: username, password: hashed, salt: salt }])
       .select();
 
     return { data, error };
