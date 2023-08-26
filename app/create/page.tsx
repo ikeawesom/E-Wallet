@@ -4,13 +4,15 @@ import { useState, useEffect } from "react";
 import { paymentDatabase } from "@/supabase/database";
 
 export default function Create() {
-  const [curPayments, setCurPayments] = useState<object[] | null>([]);
-  const [serviceInput, setServiceInput] = useState<string>("Select service");
-  const [createObj, setCreateObj] = useState({
+  const DEFAULT_OBJECT = {
     labelName: "",
     amount: 0,
     serviceName: "Disney+",
-  });
+  };
+  const [newBalance, setNewBalance] = useState<number>(0);
+  const [curPayments, setCurPayments] = useState<object[] | null>([]);
+  const [serviceInput, setServiceInput] = useState<string>("Select service");
+  const [createObj, setCreateObj] = useState(DEFAULT_OBJECT);
   const [otherVisible, setOtherVisible] = useState(false);
   const [amountPromptVisible, setAmountPromptVisible] = useState(false);
 
@@ -28,7 +30,16 @@ export default function Create() {
       setAmountPromptVisible(true);
       return;
     }
-    window.alert("Success!");
+    setNewBalance(newBalance + createObj.amount);
+    if (curPayments) {
+      setCurPayments([...curPayments, createObj]);
+    } else {
+      setCurPayments([createObj]);
+    }
+    setCreateObj(DEFAULT_OBJECT);
+    await paymentDatabase.setPayments(localStorage.getItem("Login_Username"), [
+      { balance: newBalance, payments: curPayments },
+    ]);
   }
 
   const handleSelect = (value: string) => {
@@ -48,8 +59,9 @@ export default function Create() {
       );
       if (error) {
         console.log("Error connecting to db");
-      } else {
-        setCurPayments(data);
+      } else if (data !== null) {
+        setCurPayments(data[0].payments);
+        setNewBalance(data[0].balance);
       }
     };
   }, []);
