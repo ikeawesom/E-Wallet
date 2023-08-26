@@ -44,7 +44,7 @@ CREATE TABLE users (
 ```sql
 CREATE TABLE user_payments (
     username TEXT,
-    amount INTEGER,
+    balance INTEGER,
     payments JSON[],
     PRIMARY KEY username,
     FOREGIN KEY username REFERENCES users.username

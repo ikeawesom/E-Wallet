@@ -32,7 +32,7 @@ class paymentsDB {
   async getPayments(username) {
     let { data, error } = await supabase
       .from("user_payments")
-      .select("amount, payments")
+      .select("balance, payments")
       .eq("username", username);
 
     return { data, error };
