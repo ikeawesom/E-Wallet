@@ -51,15 +51,15 @@ CREATE TABLE user_payments (
 )
 ```
 
-`payments` JSON returns an object with the following parameters: `ID`, `labelName`, `amount`, `serviceName`.
+`payments` JSON returns an list of objects with the following parameters: `ID`, `labelName`, `amount`, `serviceName`, `dateOfPayment`.
 
 For example:
 
 ```JSON
 {
-    ID: "asdua321ksdadoi34",
-    labelName: "Grab Unlimited Subcription",
-    amount: 8,
-    serviceName: "Grab"
+    labelName: "Grab Unlimited Subcription", // string (primary key)
+    amount: 8, // number
+    serviceName: "Grab" // string
+    dateOfPayment: "26-08-2023" // maintain this format DD-MM-YYYY
 }
 ```
