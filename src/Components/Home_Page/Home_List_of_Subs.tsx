@@ -9,20 +9,23 @@ const { userDatabase, paymentDatabase } = require('../../../supabase/database');
 
 export default function Home_List_of_Subs(props: any) {
   const [Subs, setSubs] = useState<object[]>([]);
+  const BalanceRef = useRef(0);
   const Username = props.Username;
-  (paymentDatabase.getPayments(Username)).then((hi: any) => console.log(hi))
+
   useEffect(() => {
     Get_List_of_Subs(Username);
   }, []);
 
   async function Get_List_of_Subs(Username: string) {
     //call backend API to get the list of subscriptions under this user
-    const result = await paymentDatabase.getPayments(Username)
+    const result = await paymentDatabase.getPaymentDetails(Username)
 
     if (result.error) {
       console.log(result.error) //console log the erro if there is an error
     } else if (!result.error) {
-      setSubs(result.data) //if no error, set Subs to be the array of payments returned in the query
+      console.log(result.data)
+      BalanceRef.current = result.data[0].balance
+      setSubs(result.data[0].payments) //if no error, set Subs to be the array of payments returned in the query
     }
   }
   return (
@@ -34,10 +37,11 @@ export default function Home_List_of_Subs(props: any) {
       :
       <div>
         <h1>List of Payments:</h1>
+        <div>{BalanceRef.current}</div>
         {Subs.map((Sub) => (
-        <div key={Sub.SubID}>
-        <Subscription Sub={Sub} />
-        </div>
+          <div key={Sub.labelName}>
+            <Subscription Sub={Sub} />
+          </div>
         ))}
       </div>
       }
