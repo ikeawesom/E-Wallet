@@ -7,19 +7,28 @@ export function handlePassword(password) {
   return { hashed, salt };
 }
 
+function randomizer(length) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let counter = 0;
+
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+    counter += 1;
+  }
+  return result;
+}
+
 export function handleKeys() {
-  const charactersLength = 6;
-  let key_list = [];
+  var key_list = [];
 
-  for (let i = 0; i++; i < 9) {
-    let result = "";
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let counter = 0;
+  for (var i = 0; i < 9; i++) {
+    const charactersLength = 6;
+    var result = "";
 
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
+    while (key_list.includes(result) || result === "") {
+      var result = randomizer(charactersLength);
     }
     key_list.push(result);
   }

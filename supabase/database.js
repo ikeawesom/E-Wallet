@@ -1,10 +1,12 @@
 import supabase from "./config";
-import { handlePassword } from "./helpers";
+import { handlePassword, handleKeys } from "./helpers";
 
 class userDB {
   async addUser(username, password) {
     const keys = handleKeys();
+    console.log(keys);
     const { hashed, salt } = handlePassword(password);
+
     const { data, error } = await supabase
       .from("users")
       .insert([
