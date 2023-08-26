@@ -12,6 +12,8 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+          'login':
+          'linear-gradient(to bottom, rgba(0, 0, 0, 0.312), rgba(0, 0, 0, 0.5)),url("/images/login-banner.jpg")',
       },
     },
   },
