@@ -10,13 +10,12 @@ export default function Create() {
     serviceName: "Disney+",
   };
   const [newBalance, setNewBalance] = useState<number>(0);
-  const [curPayments, setCurPayments] = useState<object[] | null>([]);
+  const [curPayments, setCurPayments] = useState<object[]>([]);
   const [serviceInput, setServiceInput] = useState<string>("Select service");
   const [createObj, setCreateObj] = useState(DEFAULT_OBJECT);
   const [otherVisible, setOtherVisible] = useState(false);
   const [amountPromptVisible, setAmountPromptVisible] = useState(false);
 
-  localStorage.setItem("Login_Username", "dong");
   const loginUsername = localStorage.getItem("Login_Username");
 
   const validAmount = (amount: number) => {
