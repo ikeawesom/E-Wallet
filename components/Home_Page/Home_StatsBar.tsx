@@ -1,6 +1,6 @@
 "use client";
 
-import ProgressBar from "./ProgressBar";
+import { Line } from "rc-progress";
 
 export default function StatsBar(props: any) {
   const balance = props.data.balance;
@@ -36,7 +36,17 @@ export default function StatsBar(props: any) {
         <p className="text-font-para">Last updated: {currentDate}</p>
       </div>
 
-      {progress && <ProgressBar value={progress} />}
+      {progress && (
+        <Line
+          percent={progress}
+          strokeWidth={10}
+          trailWidth={10}
+          trailColor="var(--grey)"
+          strokeLinecap="round"
+          className="drop-shadow-sm"
+          strokeColor="var(--sec-color)"
+        />
+      )}
 
       <img src="/images/card.svg" alt="card" width={200} />
 
