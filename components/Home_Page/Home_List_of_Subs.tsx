@@ -1,46 +1,44 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-
-//Component imports
-import Subscription from "./Subscription";
-
-//Backend imports
-const { userDatabase, paymentDatabase } = require("../../../supabase/database");
 
 export default function Home_List_of_Subs(props: any) {
-  const [Subs, setSubs] = useState<object[]>([]);
-  const Username = props.Username;
-  paymentDatabase
-    .getPaymentDetails(Username)
-    .then((hi: any) => console.log(hi));
-  useEffect(() => {
-    Get_List_of_Subs(Username);
-  }, []);
+  var Subs = props.data;
 
-  async function Get_List_of_Subs(Username: string) {
-    //call backend API to get the list of subscriptions under this user
-    const result = await paymentDatabase.getPaymentDetails(Username);
-
-    if (result.error) {
-      console.log(result.error); //console log the erro if there is an error
-    } else if (!result.error) {
-      setSubs(result.data); //if no error, set Subs to be the array of payments returned in the query
-    }
-  }
-  return (
-    <div>
-      {Subs.length == 0 ? (
-        <div>there are no Payments</div>
-      ) : (
-        <div>
-          <h1>List of Payments:</h1>
-          {Subs.map((Sub) => (
-            <div key={Sub.SubID}>
-              <Subscription Sub={Sub} />
-            </div>
-          ))}
+  if (Subs)
+    return (
+      <div className="flex flex-col gap-3">
+        <h1 className="text-xl font-semibold text-font-primary">
+          Your monthly payments
+        </h1>
+        <div className="bg-grey rounded-md shadow-inner overflow-hidden">
+          <div className="overflow-y-scroll">
+            <ul>
+              {Subs.map((item: any, key: number) => (
+                <li
+                  className="flex items-center justify-between px-3 py-4 hover:bg-gray-200"
+                  key={key}
+                >
+                  <div>
+                    <a href="/" className="text-xl font-bold text-sec-color">
+                      {item.labelName}
+                    </a>
+                    <p className="text-font-para">{item.serviceName}</p>
+                  </div>
+                  <h1 className="text-xl font-medium text-primary-color">
+                    ${item.amount}
+                  </h1>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      )}
+      </div>
+    );
+  return (
+    <div className="h-full w-full grid place-items-cente p-10">
+      <div className="flex items-center justify-center gap-3 flex-col">
+        <img src="/images/empty.svg" alt="Nothing found" width={150} />
+        Oops, nothing found here! Try creating a new payment.
+      </div>
     </div>
   );
 }

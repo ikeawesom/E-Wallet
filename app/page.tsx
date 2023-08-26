@@ -1,9 +1,9 @@
 "use client";
-import Home_List_of_Subs from "@/components/Home_Page/Home_List_of_Subs";
-import Nav_Bar from "@/components/Home_Page/Home_NavBar";
+import HomeBody from "@/components/Home_Page/Home_Body";
+import NavBar from "@/components/Home_Page/Home_NavBar";
+import StatsBar from "@/components/Home_Page/Home_StatsBar";
+import { paymentDatabase } from "@/supabase/database";
 import { useState, useEffect, useRef } from "react";
-
-//Component imports
 
 export default function Home() {
   const [Login_Username, set_Login_Username] = useState(
@@ -19,12 +19,42 @@ export default function Home() {
     //reroute to login page
     window.location.href = "/login";
   } else {
-    return (
-      <div>
-        <Nav_Bar Logout={Logout} />
-        <br />
-        <Home_List_of_Subs Username={Login_Username} />
-      </div>
-    );
+    const [paymentData, setPaymentData] = useState<any>();
+    const [newUser, setNewUser] = useState(false);
+
+    useEffect(() => {
+      async function getList() {
+        const { data, error } = await paymentDatabase.getPaymentDetails(
+          localStorage.getItem("Login_Username")
+        );
+        if (error) console.log(error);
+
+        if (data) {
+          setPaymentData(data[0]);
+          if (!data[0].payments) {
+            setNewUser(true);
+          }
+        }
+      }
+      getList();
+    }, []);
+
+    if (paymentData)
+      return (
+        <div className="px-10 py-5 bg-white h-screen">
+          <NavBar Logout={Logout} />
+
+          <div className="flex w-full justify-between py-3 gap-10 md:flex-row flex-col-reverse">
+            <HomeBody data={paymentData} newUser={newUser} />
+            <StatsBar data={paymentData} />
+          </div>
+
+          {/* <Home_List_of_Subs Username={Login_Username} /> */}
+          <h1 className="text-font-para bg-transparent text-center">
+            Copyright &copy; 2023 whoami. All Rights Reserved.
+          </h1>
+        </div>
+      );
+    return <h1>Loading...</h1>;
   }
 }
