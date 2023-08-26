@@ -1,5 +1,5 @@
 import supabase from "./config";
-import { handlePassword, handleKeys } from "./helpers";
+import { handlePassword, handleKeys, verifyLogin } from "./helpers";
 
 class userDB {
   async addUser(username, password) {
@@ -17,14 +17,13 @@ class userDB {
   }
 
   async loginUser(username, password) {
-    const hashed = handlePassword(password);
-
     let { data, error } = await supabase
       .from("users")
-      .select("password")
+      .select("password", "salt")
       .eq("username", username);
 
-    return { data, error, hashed };
+    if (!error) return verifyLogin(data, password);
+    return false;
   }
 }
 
@@ -32,7 +31,7 @@ class paymentsDB {
   async getPaymentDetails(username) {
     let { data, error } = await supabase
       .from("user_payments")
-      .select("balance, payments", "monthly_payments")
+      .select("balance, payments, monthly_payments")
       .eq("username", username);
 
     return { data, error };
