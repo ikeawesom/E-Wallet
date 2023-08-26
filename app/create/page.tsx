@@ -29,13 +29,14 @@ export default function Create() {
       setAmountPromptVisible(true);
       return;
     }
+    console.log(createObj)
     setNewBalance(newBalance + createObj.amount);
     if (curPayments) {
       setCurPayments([...curPayments, createObj]);
     } else {
       setCurPayments([createObj]);
     }
-    setCreateObj(DEFAULT_OBJECT);
+    //setCreateObj(DEFAULT_OBJECT);
     await paymentDatabase.setPayments(localStorage.getItem("Login_Username"), [
       { balance: newBalance, payments: curPayments },
     ]);
