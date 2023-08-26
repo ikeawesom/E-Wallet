@@ -4,7 +4,6 @@ import { handlePassword, handleKeys } from "./helpers";
 class userDB {
   async addUser(username, password) {
     const keys = handleKeys();
-    console.log(keys);
     const { hashed, salt } = handlePassword(password);
 
     const { data, error } = await supabase
@@ -29,4 +28,26 @@ class userDB {
   }
 }
 
+class paymentsDB {
+  async getPayments(username) {
+    let { data, error } = await supabase
+      .from("user_payments")
+      .select("amount, payments")
+      .eq("username", username);
+
+    return { data, error };
+  }
+
+  async setPayments(username, list) {
+    const { data, error } = await supabase
+      .from("user_payments")
+      .update({ payments: list })
+      .eq("username", username)
+      .select();
+
+    return { data, error };
+  }
+}
+
 export const userDatabase = new userDB();
+export const paymentDatabase = new paymentsDB();
