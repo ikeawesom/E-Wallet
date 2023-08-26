@@ -1,6 +1,6 @@
 "use client";
 import "./create.modules.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Create() {
   const [serviceInput, setServiceInput] = useState("Select service");
