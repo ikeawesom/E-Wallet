@@ -5,6 +5,9 @@
 @tailwind utilities;
 
 :root {
+  --primary-font-color: #121212;
+  --secondary-font-color: #333333;
+  --p-font-color: #969696;
   --white: #f3f3f3;
   --primary-color: #9b47bd;
   --sec-color: #edced7;
@@ -12,4 +15,44 @@
 
 * {
   font-family: "Roboto", sans-serif;
+  /* border: 2px dotted red; */
+}
+
+input {
+  padding: 10px 20px;
+  border-radius: 6px;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),
+    0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.submit-button {
+  background-color: var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-top: 10px;
+  color: var(--white);
+  transition: opacity 200ms ease-in-out;
+}
+
+.submit-button:hover {
+  opacity: 0.9;
+}
+
+.fade-down {
+  opacity: 0;
+  animation: fade-down-animation 600ms forwards ease-in-out;
+}
+
+@keyframes fade-down-animation {
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
