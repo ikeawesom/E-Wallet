@@ -6,28 +6,20 @@ import { paymentDatabase, userDatabase } from "@/supabase/database";
 export default function LoginForm() {
   const [user, setUser] = useState({ username: "", password: "" });
   const [newUser, setNew] = useState(false);
+  const [errorText, setErrorText] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (localStorage.getItem("Login_Username")) window.location.href = "/";
+  }, []);
 
   const handleChange = (e: any) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  async function signUp() {
-    const { data, error } = await userDatabase.addUser(
-      user.username,
-      user.password
-    );
-    return { data, error };
-  }
 
-  async function signIn() {
-    const { data, error, valid } = await userDatabase.loginUser(
-      user.username,
-      user.password
-    );
-    return { data, error, valid };
-  }
-  useEffect(() => {
-    if (localStorage.getItem("Login_Username")) window.location.href = "/";
-  }, []);
+  const handleErrors = (code: any, message: any) => {
+    if (code === "23505") message = "Username taken. Select another username.";
+    setErrorText(`ERROR: ${message}`);
+  };
 
   function setLocals(data: any) {
     localStorage.setItem("Login_Username", user.username);
@@ -40,15 +32,28 @@ export default function LoginForm() {
 
     if (newUser) {
       // Sign up
-      const { data, error } = await signUp();
-      if (!error) setLocals(data);
-      if (error.message.includes("duplicate key")) {
-        alert("This user already exists!");
+      const { data, error } = await userDatabase.addUser(
+        user.username,
+        user.password
+      );
+
+      if (error) handleErrors(error.code, error.message);
+      else {
+        setLocals(data);
       }
     } else {
-      // sign in
-      const { data, error, valid } = await signIn();
-      if (valid) setLocals(data);
+      // Sign in
+      const { data, error, valid } = await userDatabase.loginUser(
+        user.username,
+        user.password
+      );
+
+      if (error) handleErrors(error.code, error.message);
+      else {
+        if (!valid)
+          handleErrors(0, "Invalid username/password. Please try again.");
+        if (valid) setLocals(data);
+      }
     }
   };
 
@@ -67,6 +72,7 @@ export default function LoginForm() {
           placeholder="Enter your password"
           onChange={handleChange}
         />
+        {errorText && <h1 className="text-red-500">{errorText}</h1>}
         <button type="submit" className="submit-button">
           Log in
         </button>
@@ -96,6 +102,7 @@ export default function LoginForm() {
         placeholder="Enter a password"
         onChange={handleChange}
       />
+      {errorText && <h1 className="text-red-500">{errorText}</h1>}
       <button type="submit" className="submit-button hover:opacity-70">
         Sign up
       </button>
