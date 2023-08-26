@@ -32,7 +32,6 @@ export default function LoginForm() {
   function setLocals(data: any) {
     localStorage.setItem("Login_Username", user.username);
     localStorage.setItem("safekeys", data[0].safekeys);
-    alert("Log in");
     window.location.href = "/";
   }
 

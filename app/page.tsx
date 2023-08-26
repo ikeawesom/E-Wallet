@@ -1,6 +1,6 @@
 "use client";
-import Home_List_of_Subs from "@/src/components/Home_Page/Home_List_of_Subs";
-import Nav_Bar from "@/src/components/Home_Page/Home_NavBar";
+import Home_List_of_Subs from "@/components/Home_Page/Home_List_of_Subs";
+import Nav_Bar from "@/components/Home_Page/Home_NavBar";
 import { useState, useEffect, useRef } from "react";
 
 //Component imports
