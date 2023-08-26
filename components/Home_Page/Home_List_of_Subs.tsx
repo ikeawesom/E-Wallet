@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import Subscription from "./Subscription";
 
 //Backend imports
-const { userDatabase, paymentDatabase } = require('../../../supabase/database');
+const { userDatabase, paymentDatabase } = require('../../supabase/database');
 
 export default function Home_List_of_Subs(props: any) {
   const [Subs, setSubs] = useState<object[]>([]);
