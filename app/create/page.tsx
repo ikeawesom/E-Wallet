@@ -1,29 +1,30 @@
 "use client";
 import "./create.modules.css";
 import { useState, useEffect } from "react";
+import { paymentDatabase } from "@/supabase/database";
 
 export default function Create() {
-  const [serviceInput, setServiceInput] = useState("Select service");
+  const [curPayments, setCurPayments] = useState<object[] | null>([]);
+  const [serviceInput, setServiceInput] = useState<string>("Select service");
   const [createObj, setCreateObj] = useState({
     labelName: "",
     amount: 0,
     serviceName: "Disney+",
   });
-  const [availableAmount, setAvailableAmount] = useState(1000);
   const [otherVisible, setOtherVisible] = useState(false);
   const [amountPromptVisible, setAmountPromptVisible] = useState(false);
 
   localStorage.setItem("Login_Username", "dong");
   const loginUsername = localStorage.getItem("Login_Username");
 
-  const validAmount = (amount: number, availableAmount: number) => {
-    return amount > 0 && amount <= availableAmount;
+  const validAmount = (amount: number) => {
+    return amount > 0;
   };
 
   async function onSubmit(event: any) {
     event.preventDefault();
     // check if amount if invalid.
-    if (!validAmount(createObj.amount, availableAmount)) {
+    if (!validAmount(createObj.amount)) {
       setAmountPromptVisible(true);
       return;
     }
@@ -39,6 +40,20 @@ export default function Create() {
     }
     setServiceInput(value);
   };
+
+  useEffect(() => {
+    async () => {
+      const { data, error } = await paymentDatabase.getPayments(
+        localStorage.getItem("Login_Username")
+      );
+      if (error) {
+        console.log("Error connecting to db");
+      } else {
+        setCurPayments(data);
+      }
+    };
+  }, []);
+
   if (!loginUsername) {
     window.location.href = "/login";
   } else if (loginUsername) {
