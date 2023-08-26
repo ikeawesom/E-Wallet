@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --white: #eeefff;
+  --white: #f3f3f3;
   --primary-color: #9b47bd;
   --sec-color: #edced7;
 }
