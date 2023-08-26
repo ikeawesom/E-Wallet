@@ -1,6 +1,6 @@
 "use client";
 import "./create.modules.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { paymentDatabase } from "@/supabase/database";
 
 export default function Create() {
@@ -9,7 +9,7 @@ export default function Create() {
     amount: 0,
     serviceName: "Disney+",
   };
-  const [newBalance, setNewBalance] = useState<number>(0);
+  const MonthRef = useRef<number>(0);
   const [curPayments, setCurPayments] = useState<object[]>([]);
   const [serviceInput, setServiceInput] = useState<string>("Select service");
   const [createObj, setCreateObj] = useState(DEFAULT_OBJECT);
@@ -29,17 +29,25 @@ export default function Create() {
       setAmountPromptVisible(true);
       return;
     }
-    console.log(createObj)
-    setNewBalance(newBalance + createObj.amount);
+    console.log(createObj);
+    console.log(MonthRef.current);
+    MonthRef.current = MonthRef.current + createObj.amount;
+    var toinsert = [];
     if (curPayments) {
-      setCurPayments([...curPayments, createObj]);
+      toinsert = [...curPayments, createObj];
     } else {
-      setCurPayments([createObj]);
+      toinsert = [createObj];
     }
     //setCreateObj(DEFAULT_OBJECT);
-    await paymentDatabase.setPayments(localStorage.getItem("Login_Username"), [
-      { balance: newBalance, payments: curPayments },
-    ]);
+    console.log(curPayments);
+    await paymentDatabase.setPayments(
+      localStorage.getItem("Login_Username"),
+      toinsert
+    );
+    await paymentDatabase.setMonthlyPayments(
+      localStorage.getItem("Login_Username"),
+      MonthRef.current
+    );
   }
 
   const handleSelect = (value: string) => {
@@ -51,19 +59,20 @@ export default function Create() {
     }
     setServiceInput(value);
   };
-
+  async function GetData() {
+    const { data, error } = await paymentDatabase.getPaymentDetails(
+      localStorage.getItem("Login_Username")
+    );
+    if (error) {
+      console.log("Error connecting to db");
+    } else if (data !== null) {
+      setCurPayments(data[0].payments);
+      MonthRef.current = data[0].monthly_payments;
+      console.log(MonthRef.current, data[0].monthly_payments);
+    }
+  }
   useEffect(() => {
-    async () => {
-      const { data, error } = await paymentDatabase.getPayments(
-        localStorage.getItem("Login_Username")
-      );
-      if (error) {
-        console.log("Error connecting to db");
-      } else if (data !== null) {
-        setCurPayments(data[0].payments);
-        setNewBalance(data[0].balance);
-      }
-    };
+    GetData();
   }, []);
 
   if (!loginUsername) {
