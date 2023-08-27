@@ -3,13 +3,17 @@ import HomeBody from "@/components/Home_Page/Home_Body";
 import NavBar from "@/components/Home_Page/Home_NavBar";
 import StatsBar from "@/components/Home_Page/Home_StatsBar";
 import SuccessPopup from "@/components/Home_Page/SuccessPopup";
+import SuccessPopupDeposit from "@/components/Home_Page/SuccessPopupDeposit";
 import { paymentDatabase } from "@/supabase/database";
 import { useState, useEffect } from "react";
 
 export default function Home() {
   const [added, setAdded] = useState(false);
+  const [deposited, setDeposit] = useState(false);
+
   const Login_Username = localStorage.getItem("Login_Username");
   const new_item = localStorage.getItem("add-item");
+  const deposit = localStorage.getItem("deposit");
 
   //Get the Login Username. will be null if not logged in
 
@@ -26,6 +30,14 @@ export default function Home() {
     }, 3000);
   }
 
+  function createNotifA() {
+    setDeposit(true);
+    setTimeout(() => {
+      setDeposit(false);
+      localStorage.removeItem("deposit");
+    }, 3000);
+  }
+
   if (!Login_Username) {
     //if Login_Username is null, means user is not logged in
     //reroute to login page
@@ -37,6 +49,9 @@ export default function Home() {
     useEffect(() => {
       if (new_item !== null) {
         createNotif();
+      }
+      if (deposit !== null) {
+        createNotifA();
       }
 
       async function getList() {
@@ -71,6 +86,8 @@ export default function Home() {
           </h1>
 
           {added && <SuccessPopup item={new_item} />}
+
+          {deposited && <SuccessPopupDeposit item={deposit} />}
         </div>
       );
     return <h1>Loading...</h1>;
