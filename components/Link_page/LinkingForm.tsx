@@ -15,7 +15,10 @@ export default function LinkingForm(props: any) {
     async function getDetails() {
       const { data, error } = await paymentDatabase.getBankDetails(USERNAME);
       if (data !== null) {
-        setbankDetails(data[0].bank_details);
+        if (data[0].bank_details !== null) {
+          console.log(data[0]);
+          setbankDetails(data[0].bank_details);
+        }
       }
     }
     getDetails();
