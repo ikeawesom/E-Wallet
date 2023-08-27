@@ -1,17 +1,27 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { paymentDatabase } from "@/supabase/database";
 
 export default function LinkingForm(props: any) {
   const USERNAME = props.username;
   const [emptyPrompt, setEmptyPrompt] = useState(false);
-  const [bankDetails, setbankDetails] = useState(
-    props.bankDetails !== undefined
-      ? props.bankDetails
-      : { card_num: "", cvv: "", date_of_expiry: "" }
-  );
-  console.log(bankDetails);
+  const [bankDetails, setbankDetails] = useState({
+    card_num: "",
+    cvv: "",
+    date_of_expiry: "",
+  });
 
+  useEffect(() => {
+    async function getDetails() {
+      const { data, error } = await paymentDatabase.getBankDetails(USERNAME);
+      if (data !== null) {
+        setbankDetails(data[0].bank_details);
+      }
+    }
+    getDetails();
+  }, []);
+
+  console.log(bankDetails, props.bank_details);
   async function onSubmit(event: any) {
     event.preventDefault();
     if (
