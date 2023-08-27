@@ -23,7 +23,7 @@ export default function Home() {
     setTimeout(() => {
       setAdded(false);
       localStorage.removeItem("add-item");
-    }, 2000);
+    }, 3000);
   }
 
   if (!Login_Username) {
