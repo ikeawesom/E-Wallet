@@ -24,7 +24,7 @@ export default function HomeBody(props: any) {
             </h1>
           </div>
           <button className="px-4 py-2 border-2 border-white rounded-lg text-white font-bold text-lg hover:bg-white hover:text-sec-color duration-200">
-            Get started
+            <a href="/link">Get started</a>
           </button>
         </div>
       )}
