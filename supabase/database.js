@@ -67,6 +67,24 @@ class paymentsDB {
 
     return { data, error };
   }
+  async linkBank(username, bank_num) {
+    let { data, error } = await supabase
+      .from("user_payments")
+      .update({ bank_account: bank_num })
+      .eq("username", username)
+      .select();
+
+    return { data, error };
+  }
+
+  async getBankDetails(username) {
+    let { data, error } = await supabase
+      .from("user_payments")
+      .select("bank_account")
+      .eq("username", username);
+
+    return { data, error };
+  }
 }
 
 export const userDatabase = new userDB();
