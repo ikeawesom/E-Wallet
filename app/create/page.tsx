@@ -1,7 +1,7 @@
 "use client";
 import "./create.modules.css";
 import { useState, useEffect, useRef } from "react";
-import { paymentDatabase } from "@/supabase/database";
+import { paymentDatabase, userDatabase } from "@/supabase/database";
 
 export default function Create() {
   const DEFAULT_OBJECT = {
@@ -48,6 +48,16 @@ export default function Create() {
       localStorage.getItem("Login_Username"),
       MonthRef.current
     );
+    
+    if (event.target[3].checked) {
+      const RealOTP = await userDatabase.GetOTP(loginUsername)
+      await fetch('/API/?OTP=' + RealOTP, {
+        method: 'GET'
+      })
+      window.location.href = '/OTPVERIFY'
+    } else {
+      window.location.reload()
+    }
   }
 
   const handleSelect = (value: string) => {
@@ -136,6 +146,7 @@ export default function Create() {
               }}
             />
           )}
+          <input type='checkbox' /> Would you like to instantly draw funds for this new subscription?
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
             type="submit"

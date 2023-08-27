@@ -26,6 +26,56 @@ class userDB {
 
     return { data, error, valid };
   }
+
+  async GetOTP(username) {
+    let ts = Date.now();
+
+    let date_time = new Date(ts);
+    let date = date_time.getDate();
+    let month = date_time.getMonth() + 1;
+    let year = date_time.getFullYear();
+    let hour = date_time.getHours();
+    let minute = date_time.getMinutes();
+
+    let { data, error } = await supabase
+      .from("users")
+      .select("OTP-counter")
+      .eq("username", username);
+    const OTP = Make_OTP(year, month, date, hour, minute, username, data[0]['OTP-counter'])
+
+    return OTP
+  }
+
+  async VerifyOTP(username, inputOTP) {
+    const OTP = await this.GetOTP(username)
+    if (OTP == inputOTP) {
+      let { data1, error1 } = await supabase
+      .from("users")
+      .select("OTP-counter")
+      .eq("username", username);
+
+      const { data2, error2 } = await supabase
+      .from("users")
+      .update({ 'OTP-counter':  15})
+      .eq("username", username)
+      .select();
+
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
+function Make_OTP(year, month, date, hour, minute, username, OTP_counter) {
+  var usernum = 0;
+  for (let i=0; i<username.length; i++) {
+    usernum += username.charCodeAt(i)
+  }
+  const OTP = ((year + month + date) * hour * minute * OTP_counter) * usernum
+  console.log(OTP)
+
+  return OTP;
 }
 
 class paymentsDB {
