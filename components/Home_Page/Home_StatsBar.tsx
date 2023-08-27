@@ -6,10 +6,9 @@ export default function StatsBar(props: any) {
   const balance = props.data.balance;
   const total_payments = props.data.monthly_payments;
   var progress = null;
+
   if (total_payments !== 0) {
     progress = (balance / total_payments) * 100;
-  } else {
-    progress = 0;
   }
 
   const date = new Date();
