@@ -1,4 +1,4 @@
-# WHAT THE HACK PROJECT
+# WhatTheWallet?
 
 ## Supabase
 
