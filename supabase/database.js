@@ -67,10 +67,10 @@ class paymentsDB {
 
     return { data, error };
   }
-  async linkBank(username, bank_num) {
+  async linkBank(username, bank_details) {
     let { data, error } = await supabase
       .from("user_payments")
-      .update({ bank_account: bank_num })
+      .update({ bank_details: bank_details })
       .eq("username", username)
       .select();
 
@@ -80,7 +80,7 @@ class paymentsDB {
   async getBankDetails(username) {
     let { data, error } = await supabase
       .from("user_payments")
-      .select("bank_account")
+      .select("bank_details")
       .eq("username", username);
 
     return { data, error };
