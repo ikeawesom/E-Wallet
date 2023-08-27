@@ -2,6 +2,7 @@
 import "./create.modules.css";
 import { useState, useEffect, useRef } from "react";
 import { paymentDatabase, userDatabase } from "@/supabase/database";
+import CreateNav from "@/components/Create_Page/CreateNav";
 
 export default function Create() {
   const DEFAULT_OBJECT = {
@@ -29,8 +30,7 @@ export default function Create() {
       setAmountPromptVisible(true);
       return;
     }
-    console.log(createObj);
-    console.log(MonthRef.current);
+
     MonthRef.current = MonthRef.current + createObj.amount;
     var toinsert = [];
     if (curPayments) {
@@ -49,6 +49,7 @@ export default function Create() {
       MonthRef.current
     );
     
+    localStorage.setItem("add-item", createObj.labelName);
     if (event.target[3].checked) {
       const RealOTP = await userDatabase.GetOTP(loginUsername)
       await fetch('/API/?OTP=' + RealOTP, {
@@ -89,8 +90,15 @@ export default function Create() {
     window.location.href = "/login";
   } else if (loginUsername) {
     return (
-      <div className="createPage">
-        <form onSubmit={onSubmit}>
+      <div className="w-full h-screen grid place-items-center bg-grey">
+        <CreateNav />
+        <form
+          onSubmit={onSubmit}
+          className="w-1/4 shadow-md p-10 bg-white rounded-md"
+        >
+          <h1 className="text-2xl font-bold text-primary-color">
+            Add a <span className="text-sec-color">recurring payment</span>
+          </h1>
           <input
             name="labelName"
             id="labelName"
@@ -119,7 +127,7 @@ export default function Create() {
             <p className="text-red-500">Invalid amount entered!</p>
           )}
           <select
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            className="w-full"
             value={serviceInput}
             name="serviceName"
             onChange={(e) => handleSelect(e.target.value)}
@@ -148,7 +156,7 @@ export default function Create() {
           )}
           <input type='checkbox' /> Would you like to instantly draw funds for this new subscription?
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+            className="bg-primary-color text-grey py-3 w-full rounded-md hover:bg-sec-color duration-200"
             type="submit"
           >
             Create new payment

@@ -7,10 +7,10 @@ export default function Home_List_of_Subs(props: any) {
     return (
       <div className="flex flex-col gap-3">
         <h1 className="text-xl font-semibold text-font-primary">
-          Your monthly payments
+          Your monthly payments ({Subs.length})
         </h1>
-        <div className="bg-grey rounded-md shadow-inner overflow-hidden">
-          <div className="overflow-y-scroll">
+        <div className="bg-white rounded-md shadow-inner overflow-hidden">
+          <div className="overflow-y-scroll max-h-[50vh]">
             <ul>
               {Subs.map((item: any, key: number) => (
                 <li
