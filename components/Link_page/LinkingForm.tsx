@@ -47,11 +47,18 @@ export default function LinkingForm(props: any) {
     }
   }
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="flex flex-col gap-3 w-1/4">
       <h3>Username:</h3>
-      <input type="text" value={USERNAME} name="username" readOnly />
+      <input
+        type="text"
+        value={USERNAME}
+        name="username"
+        readOnly
+        className="w-full"
+      />
       <h3>Card number</h3>
       <input
+        className="w-full"
         type="text"
         value={bankDetails.card_num}
         name="card_num"
@@ -65,6 +72,7 @@ export default function LinkingForm(props: any) {
       />
       <h3>CVV:</h3>
       <input
+        className="w-full"
         type="number"
         value={bankDetails.cvv}
         name="cvv"
@@ -77,6 +85,7 @@ export default function LinkingForm(props: any) {
       />
       <h3>Date of expiry</h3>
       <input
+        className="w-full"
         type="text"
         value={bankDetails.date_of_expiry}
         name="date_of_expiry"
@@ -90,7 +99,12 @@ export default function LinkingForm(props: any) {
           your bank account number
         </p>
       )}
-      <button type="submit">Modify changes</button>
+      <button
+        type="submit"
+        className="bg-primary-color text-grey py-3 w-full rounded-md hover:bg-sec-color duration-200"
+      >
+        Modify changes
+      </button>
     </form>
   );
 }
