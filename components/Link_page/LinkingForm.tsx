@@ -29,7 +29,7 @@ export default function LinkingForm(props: any) {
   }
   return (
     <form onSubmit={onSubmit}>
-      <input type="text" value={USERNAME} name="username" disabled />
+      <input type="text" value={USERNAME} name="username" readOnly />
       <input
         type="text"
         value={bankAcc}
