@@ -23,7 +23,7 @@ export default function StatsBar(props: any) {
   const services_list = [
     { name: "Connect bank", link: "/link", icon: "bank" },
     { name: "Add payment", link: "/create", icon: "add-card" },
-    { name: "Top up manually", link: "", icon: "add-wallet" },
+    { name: "Top up manually", link: "/manual", icon: "add-wallet" },
   ];
 
   return (
