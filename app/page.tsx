@@ -4,16 +4,19 @@ import NavBar from "@/components/Home_Page/Home_NavBar";
 import StatsBar from "@/components/Home_Page/Home_StatsBar";
 import SuccessPopup from "@/components/Home_Page/SuccessPopup";
 import SuccessPopupDeposit from "@/components/Home_Page/SuccessPopupDeposit";
+import SuccessPopupUpdate from "@/components/Home_Page/SuccessPopupUpdate";
 import { paymentDatabase } from "@/supabase/database";
 import { useState, useEffect } from "react";
 
 export default function Home() {
   const [added, setAdded] = useState(false);
   const [deposited, setDeposit] = useState(false);
+  const [update, setUpdate] = useState(false);
 
   const Login_Username = localStorage.getItem("Login_Username");
   const new_item = localStorage.getItem("add-item");
   const deposit = localStorage.getItem("deposit");
+  const updates = localStorage.getItem("update");
 
   //Get the Login Username. will be null if not logged in
 
@@ -38,6 +41,14 @@ export default function Home() {
     }, 3000);
   }
 
+  function createNotifB() {
+    setUpdate(true);
+    setTimeout(() => {
+      setUpdate(false);
+      localStorage.removeItem("update");
+    }, 3000);
+  }
+
   if (!Login_Username) {
     //if Login_Username is null, means user is not logged in
     //reroute to login page
@@ -52,6 +63,9 @@ export default function Home() {
       }
       if (deposit !== null) {
         createNotifA();
+      }
+      if (updates !== null) {
+        createNotifB();
       }
 
       async function getList() {
@@ -88,6 +102,8 @@ export default function Home() {
           {added && <SuccessPopup item={new_item} />}
 
           {deposited && <SuccessPopupDeposit item={deposit} />}
+
+          {update && <SuccessPopupUpdate />}
         </div>
       );
     return <h1>Loading...</h1>;

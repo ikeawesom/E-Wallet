@@ -42,7 +42,7 @@ export default function LinkingForm(props: any) {
     if (error) {
       console.log(error);
     } else {
-      window.alert("Successfully modified bank details!");
+      localStorage.setItem("update", "true");
       window.location.href = "/";
     }
   }
